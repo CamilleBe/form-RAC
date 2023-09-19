@@ -1,5 +1,6 @@
 <?php
 
+
 try {
     $dbh = new PDO('mysql:host=localhost:3306; dbname=rac; charset=utf8', 'root', 'root');
 } catch (Exception $e) {
@@ -25,6 +26,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['lenght_phone'] = "Le numéro renseigner n'existe pas";
     }
 
+    //Condition naissance
+    if (!preg_match("~^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19[2-9][0-9]|200[0-7])$~", $_POST['date_naissance'])) {
+        $errors['wrong_date'] = "Veuillez rentrer une date de naissance valide";
+    }
+
+    //Condition naissance co-emprunteur
+    if (!preg_match("~^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19[2-9][0-9]|200[0-7])$~", $_POST['date_naissance_co_emprunteur'])) {
+        $errors['wrong_date_co_emprunteur'] = "Veuillez rentrer une date de naissance valide";
+    }
+
+    //Condition nombre enfants
+    if (!preg_match("~^(10|[0-9])$~", $_POST['nombre_enfant'])) {
+        $errors['wrong_enfants'] = "Veuillez rentrer un nombre valide";
+    }
+
+    var_dump($errors); // Affiche le contenu de la variable $errors
+
 
     if (empty($errors)) {
         try {
@@ -38,6 +56,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':valeur_patrimoine_immobilier' => $_POST['valeur_patrimoine_immobilier'],
 
                 ':credit_consommation' => $_POST['credit_consommation'],
+                ':mensualites_credits_consommations' => $_POST['mensualites_credits_consommations'],
+                ':total_restant_credits_consommations' => $_POST['total_restant_credits_consommations'],
+
+                ':autre_dette' => $_POST['autre_dette'],
 
 
                 ':genre' => $_POST['genre'],
@@ -48,13 +70,142 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':code_postal' => $_POST['code_postal'],
                 ':telephone' => $_POST['telephone'],
                 ':email' => $_POST['email'],
+                ':date_naissance' => $_POST['date_naissance'],
+                ':ville_naissance' => $_POST['ville_naissance'],
+                ':pays_naissance' => $_POST['pays_naissance'],
+                ':nationalite' => $_POST['nationalite'],
+                ':objet_fichage' => $_POST['objet_fichage'],
+                ':situation_logement' => $_POST['situation_logement'],
+                ':situation_maritale' => $_POST['situation_maritale'],
+                ':nombre_enfant' => $_POST['nombre_enfant'],
+
+                ':profession' => $_POST['profession'],
+                ':contrat_de_travail' => $_POST['contrat_de_travail'],
+                ':anciennete_travail_mois' => $_POST['anciennete_travail_mois'],
+                ':anciennete_travail_annee' => $_POST['anciennete_travail_annee'],
+                ':revenu_net_mensuel_avant_prelevement' => $_POST['revenu_net_mensuel_avant_prelevement'],
+                ':frequence_revenus' => $_POST['frequence_revenus'],
+
+                ':emprunt' => $_POST['emprunt'],
+
+                ':genre_co_emprunteur' => $_POST['genre_co_emprunteur'],
+                ':nom_co_emprunteur' => $_POST['nom_co_emprunteur'],
+                ':prenom_co_emprunteur' => $_POST['prenom_co_emprunteur'],
+                ':date_naissance_co_emprunteur' => $_POST['date_naissance_co_emprunteur'],
+                ':ville_naissance_co_emprunteur' => $_POST['ville_naissance_co_emprunteur'],
+                ':pays_naissance_co_emprunteur' => $_POST['pays_naissance_co_emprunteur'],
+                ':nationalite_co_emprunteur' => $_POST['nationalite_co_emprunteur'],
+
+                ':contrat_de_travail_co_emprunteur' => $_POST['contrat_de_travail_co_emprunteur'],
+                ':anciennete_travail_mois_co_emprunteur' => $_POST['anciennete_travail_mois_co_emprunteur'],
+                ':anciennete_travail_annee_co_emprunteur' => $_POST['anciennete_travail_annee_co_emprunteur'],
+                ':revenu_net_mensuel_avant_prelevement_co_emprunteur' => $_POST['revenu_net_mensuel_avant_prelevement_co_emprunteur'],
+                ':frequence_revenus_co_emprunteur' => $_POST['frequence_revenus_co_emprunteur'],
+
+
                 ':acceptations' => isset($_POST['acceptations']) ? 'accepté' : 0,
 
                 ':date' => date('Y-m-d H:i:s'), // Enregistrement de la date d'envoi
                 ':client_id' => $_POST['client_id']
             );
 
-            $query = $dbh->prepare('INSERT INTO rac(status, credit_immobilier, mensualites_credits_immobiliers, total_restant_credits_immobiliers, valeur_patrimoine_immobilier, credit_consommation, genre, nom, prenom, adresse, ville, code_postal, telephone, email, acceptations, date, client_id) VALUES(:status, :credit_immobilier, :mensualites_credits_immobiliers, :total_restant_credits_immobiliers, :valeur_patrimoine_immobilier, :credit_consommation, :genre, :nom, :prenom, :adresse, :ville, :code_postal, :telephone, :email, :acceptations, :date, :client_id)');
+            $query = $dbh->prepare('INSERT INTO rac(
+                                                        status,
+                                                        credit_immobilier,
+                                                        mensualites_credits_immobiliers,
+                                                        total_restant_credits_immobiliers,
+                                                        valeur_patrimoine_immobilier,
+                                                        credit_consommation,
+                                                        mensualites_credits_consommations,
+                                                        total_restant_credits_consommations,
+                                                        autre_dette,
+                                                        genre,
+                                                        nom,
+                                                        prenom,
+                                                        adresse,
+                                                        ville,
+                                                        code_postal,
+                                                        telephone,
+                                                        email,
+                                                        date_naissance,
+                                                        ville_naissance,
+                                                        pays_naissance,
+                                                        nationalite,
+                                                        objet_fichage,
+                                                        situation_logement,
+                                                        situation_maritale,
+                                                        nombre_enfant,
+                                                        profession,
+                                                        contrat_de_travail,
+                                                        anciennete_travail_mois,
+                                                        anciennete_travail_annee,
+                                                        revenu_net_mensuel_avant_prelevement,
+                                                        frequence_revenus,
+                                                        emprunt,
+                                                        genre_co_emprunteur,
+                                                        nom_co_emprunteur,
+                                                        prenom_co_emprunteur,
+                                                        date_naissance_co_emprunteur,
+                                                        ville_naissance_co_emprunteur,
+                                                        pays_naissance_co_emprunteur,
+                                                        nationalite_co_emprunteur,
+                                                        contrat_de_travail_co_emprunteur,
+                                                        anciennete_travail_mois_co_emprunteur,
+                                                        anciennete_travail_annee_co_emprunteur,
+                                                        revenu_net_mensuel_avant_prelevement_co_emprunteur,
+                                                        frequence_revenus_co_emprunteur,
+                                                        acceptations,
+                                                        date,
+                                                        client_id
+                                                    ) VALUES(
+                                                        :status,
+                                                        :credit_immobilier,
+                                                        :mensualites_credits_immobiliers,
+                                                        :total_restant_credits_immobiliers,
+                                                        :valeur_patrimoine_immobilier,
+                                                        :credit_consommation,
+                                                        :mensualites_credits_consommations,
+                                                        :total_restant_credits_consommations,
+                                                        :autre_dette,
+                                                        :genre,
+                                                        :nom,
+                                                        :prenom,
+                                                        :adresse,
+                                                        :ville,
+                                                        :code_postal,
+                                                        :telephone,
+                                                        :email,
+                                                        :date_naissance,
+                                                        :ville_naissance,
+                                                        :pays_naissance,
+                                                        :nationalite,
+                                                        :objet_fichage,
+                                                        :situation_logement,
+                                                        :situation_maritale,
+                                                        :nombre_enfant,
+                                                        :profession,
+                                                        :contrat_de_travail,
+                                                        :anciennete_travail_mois,
+                                                        :anciennete_travail_annee,
+                                                        :revenu_net_mensuel_avant_prelevement,
+                                                        :frequence_revenus,
+                                                        :emprunt,
+                                                        :genre_co_emprunteur,
+                                                        :nom_co_emprunteur,
+                                                        :prenom_co_emprunteur,
+                                                        :date_naissance_co_emprunteur,
+                                                        :ville_naissance_co_emprunteur,
+                                                        :pays_naissance_co_emprunteur,
+                                                        :nationalite_co_emprunteur,
+                                                        :contrat_de_travail_co_emprunteur,
+                                                        :anciennete_travail_mois_co_emprunteur,
+                                                        :anciennete_travail_annee_co_emprunteur,
+                                                        :revenu_net_mensuel_avant_prelevement_co_emprunteur,
+                                                        :frequence_revenus_co_emprunteur,
+                                                        :acceptations,
+                                                        :date,
+                                                        :client_id
+                                                    )');
             $query->execute($query_params);
             echo "New record inserted successfully.";
 
@@ -67,23 +218,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-/*CREATE TABLE energie_solaire (
-  id INT NOT NULL AUTO_INCREMENT,
-  status VARCHAR(255),
-  logement_type VARCHAR(255),
-  facture_energie VARCHAR(255),
-  genre VARCHAR(255),
-  nom VARCHAR(255),
-  prenom VARCHAR(255),
-  adresse VARCHAR(255),
-  code_postal VARCHAR(5),
-  ville VARCHAR(255),
-  telephone VARCHAR(10),
-  email VARCHAR(255),
-  acceptations BOOLEAN,
-  offre BOOLEAN,
-  PRIMARY KEY (id)
-);*/
+/* CREATE TABLE rac (
+    status VARCHAR(255),
+    credit_immobilier VARCHAR(255),
+    mensualites_credits_immobiliers DECIMAL(10, 2),
+    total_restant_credits_immobiliers DECIMAL(10, 2),
+    valeur_patrimoine_immobilier DECIMAL(10, 2),
+    credit_consommation VARCHAR(50),
+    mensualites_credits_consommations DECIMAL(10, 2),
+    total_restant_credits_consommations DECIMAL(10, 2),
+    autre_dette VARCHAR(50),
+    genre VARCHAR(255),
+    nom VARCHAR(255),
+    prenom VARCHAR(255),
+    adresse VARCHAR(255),
+    ville VARCHAR(255),
+    code_postal VARCHAR(255),
+    telephone VARCHAR(255),
+    email VARCHAR(255),
+    date_naissance DATE,
+    ville_naissance VARCHAR(255),
+    pays_naissance VARCHAR(255),
+    nationalite VARCHAR(255),
+    objet_fichage VARCHAR(255),
+    situation_logement VARCHAR(255),
+    situation_maritale VARCHAR(255),
+    nombre_enfant INT,
+    profession VARCHAR(255),
+    contrat_de_travail VARCHAR(255),
+    anciennete_travail_mois INT,
+    anciennete_travail_annee INT,
+    revenu_net_mensuel_avant_prelevement DECIMAL(10, 2),
+    frequence_revenus VARCHAR(255),
+    emprunt VARCHAR(255),
+    genre_co_emprunteur VARCHAR(255),
+    nom_co_emprunteur VARCHAR(255),
+    prenom_co_emprunteur VARCHAR(255),
+    date_naissance_co_emprunteur DATE,
+    ville_naissance_co_emprunteur VARCHAR(255),
+    pays_naissance_co_emprunteur VARCHAR(255),
+    nationalite_co_emprunteur VARCHAR(255),
+    contrat_de_travail_co_emprunteur VARCHAR(255),
+    anciennete_travail_mois_co_emprunteur INT,
+    anciennete_travail_annee_co_emprunteur INT,
+    revenu_net_mensuel_avant_prelevement_co_emprunteur DECIMAL(10, 2),
+    frequence_revenus_co_emprunteur VARCHAR(255),
+    acceptations VARCHAR(255),
+    date DATETIME,
+    client_id INT
+);
+*/
 
 $genre = $_POST['genre'] ?? "";
 $nom = $_POST['nom'] ?? "";
@@ -98,25 +282,25 @@ $email = $_POST['email'] ?? "";
 ?>
 
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" xmlns="http://www.w3.org/1999/html">
 <head>
     <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-TTKG7XR');</script>
-<!-- End Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-TTKG7XR');</script>
+    <!-- End Google Tag Manager -->
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YJVDX1493G"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJVDX1493G"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-  gtag('config', 'G-YJVDX1493G');
-</script>
+        gtag('config', 'G-YJVDX1493G');
+    </script>
 
     <meta charset="UTF-8">
     <title>Rachat de crédits</title>
@@ -124,6 +308,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="style-form-rac.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <script>
         // Récupérer le paramètre "client_id" depuis l'URL
@@ -146,23 +334,32 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <h1>Rachat de crédits</h1>
     </div>
 
-        <div>
-            <p>Recevez une propostion adaptée à vos besoins financiés</p>
-            <form action="form-rac.php" method="POST">
+    <div>
+        <p id="phrase-form">Recevez une propostion adaptée à vos besoins financiés</p>
+        <form action="form-rac.php" method="POST">
 
-                <input type="hidden" name="client_id" id="clientIdInput" value="">
+            <input type="hidden" name="client_id" id="clientIdInput" value="">
 
-                <div class="f2pl">
-                        <label for="statut">Êtes vous propriétaire d'un bien ?</label required>
-                        <input type="radio" id="oui" name="statut" value="propriétaire" <?php if ($_POST['statut'] === 'homme') { echo 'checked'; } ?>>
-                        <label for="propriétaire">Oui</label>
+            <div class="cadre">
+                <p>1. Vos crédits</p>
+                <h2>Êtes vous propriétaire d'un bien ?</h2>
 
-                        <input type="radio" id="" name="statut" value="non" <?php if ($_POST['statut'] === 'non') { echo 'checked'; } ?>>
-                        <label for="non">Non</label>
+                <div class="container radio">
+                    <input type="radio" id="proprietaire" name="statut" value="proprietaire" <?php if ($_POST['statut'] === 'proprietaire') { echo 'checked'; } ?>>
+                    <label for="proprietaire" class="style-label">Oui</label>
+
+                    <input type="radio" id="non" name="statut" value="non" <?php if ($_POST['statut'] === 'non') { echo 'checked'; } ?>>
+                    <label for="non" class="style-label">Non</label>
                 </div>
+                <button class="grey-button">SUIVANT</button>
+            </div>
 
 
-                <div class="fl">
+            <div class="cadre">
+                <p>1. Vos crédits</p>
+                <h2>Combien de crédits immobiliers avez vous ?</h2>
+
+                <div class="container container-normal">
                     <label for="credit_immobilier">Nombre de crédits immobiliez</label>
                     <select id="credit_immobilier" name="credit_immobilier" required>
                         <option value=""></option>
@@ -178,20 +375,50 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <option value="9" <?php if($_POST['credit_immobilier'] === '9') echo 'selected'; ?>>9</option>
                         <option value="10" <?php if($_POST['credit_immobilier'] === '10') echo 'selected'; ?>>10</option>
                     </select>
+
+                </div>
+                <button class="grey-button">SUIVANT</button>
+
+            </div>
+
+            <div class="cadre">
+
+                <p>1. Vos crédits</p>
+                <h2>Détails des crédits immobiliers</h2>
+
+                <div class="container container-normal container-column container-input">
+
+                    <div class="f2pl">
+                        <div>
+                            <label for="mensualites_credits_immobiliers">Montant des mensualités</label><br>
+                            <input type="text" id="mensualites_credits_immobiliers" name="mensualites_credits_immobiliers" autocomplete="mensualites_credits_immobiliers" value="<?php echo $_POST['mensualites_credits_immobiliers'] ?? ''; ?>" required>
+                        </div>
+
+
+                        <div>
+                            <label for="total_restant_credits_immobiliers">Montant total restant dû</label><br>
+                            <input type="text" id="total_restant_credits_immobiliers" name="total_restant_credits_immobiliers" autocomplete="total_restant_credits_immobiliers" value="<?php echo $_POST['total_restant_credits_immobiliers'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="fl fl-top">
+                        <label for="valeur_patrimoine_immobilier">Valeur approximative de votre patrimoine immobilier</label>
+                        <input type="text" id="valeur_patrimoine_immobilier" name="valeur_patrimoine_immobilier" autocomplete="valeur_patrimoine_immobilier" value="<?php echo $_POST['valeur_patrimoine_immobilier'] ?? ''; ?>" required>
+                    </div>
+
                 </div>
 
-                <div>
-                    <label for="mensualites_credits_immobiliers">Montant des mensualités de vos crédits immobiliers</label>
-                    <input type="text" id="mensualites_credits_immobiliers" name="mensualites_credits_immobiliers" autocomplete="mensualites_credits_immobiliers" value="<?php echo $mensualites_credits_immobiliers ?? ''; ?>" required>
+                <button id="button-input" class="grey-button">SUIVANT</button>
 
-                    <label for="total_restant_credits_immobiliers">Montant total restant dû de vos crédits immobiliers</label>
-                    <input type="text" id="total_restant_credits_immobiliers" name="total_restant_credits_immobiliers" autocomplete="total_restant_credits_immobiliers" value="<?php echo $total_restant_credits_immobiliers ?? ''; ?>" required>
+            </div>
 
-                    <label for="valeur_patrimoine_immobilier">Valeur approximative de votre patrimoine immobilier</label>
-                    <input type="text" id="valeur_patrimoine_immobilier" name="valeur_patrimoine_immobilier" autocomplete="valeur_patrimoine_immobilier" value="<?php echo $valeur_patrimoine_immobilier ?? ''; ?>" required>
-                </div>
+            <div class="cadre">
 
-                <div class="fl">
+                <p>1. Vos crédits</p>
+                <h2>Combien de crédits à la consommation avez vous ?</h2>
+
+
+                <div class="container container-normal">
                     <label for="credit_consommation">Nombre de crédits à la consommation</label>
                     <select id="credit_consommation" name="credit_consommation" required>
                         <option value=""></option>
@@ -207,108 +434,461 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <option value="9" <?php if($_POST['credit_consommation'] === '9') echo 'selected'; ?>>9</option>
                         <option value="10" <?php if($_POST['credit_consommation'] === '10') echo 'selected'; ?>>10</option>
                     </select>
+
                 </div>
 
+                <button class="grey-button">SUIVANT</button>
+
+            </div>
+
+            <div class="cadre">
+                <p>1. Vos crédits</p>
+                <h2>Détails des crédits à la consommation</h2>
+
+                <div class="container container-normal container-column container-input">
+
+                    <div class="f2pl">
+                        <div>
+                            <label for="mensualites_credits_consommations">Montant des mensualités</label>
+                            <input type="text" id="mensualites_credits_consommations" name="mensualites_credits_consommations" autocomplete="mensualites_credits_consommations" value="<?php echo $_POST['mensualites_credits_consommations'] ?? ''; ?>" required>
+                        </div>
+
+                        <div>
+                            <label for="total_restant_credits_consommations">Montant total restant dû</label>
+                            <input type="text" id="total_restant_credits_consommations" name="total_restant_credits_consommations" autocomplete="total_restant_credits_consommations" value="<?php echo $_POST['total_restant_credits_consommations'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="fl fl-top">
+                        <label for="autre_dette">Si autres dettes, total restant dû </label>
+                        <input type="text" id="autre_dette" name="autre_dette" autocomplete="autre_dette" value="<?php echo $_POST['autre_dette'] ?? '' ; ?>" required>
+                    </div>
+
+                </div>
+
+                <button id="button-input" class="grey-button">SUIVANT</button>
+            </div>
 
 
+            <div class="cadre">
+                <p>2. Votre profil</p>
+                <h2>Détails de vos informations personnelles</h2>
+
+                <div class="container container-normal container-column container-input">
+                    <div>
+                        <input type="radio" id="homme" name="genre" value="homme" <?php if ($_POST['genre'] === 'homme') { echo 'checked'; } ?>>
+                        <label for="homme">Homme</label>
+
+                        <input type="radio" id="femme" name="genre" value="femme" <?php if ($_POST['genre'] === 'femme') { echo 'checked'; } ?>>
+                        <label for="femme">Femme</label>
+
+                        <input type="radio" id="non-defini" name="genre" value="non-defini" <?php if ($_POST['genre'] === 'non-defini') { echo 'checked'; } ?>>
+                        <label for="non-defini">Non défini</label>
+                    </div>
+
+                    <div class="f2pl">
+                        <div>
+                            <label for="nom">Nom</label><br>
+                            <input type="text" id="nom" name="nom" autocomplete="nom" value="<?php echo $nom ?? ''; ?>" required>
+                        </div>
+
+                        <div>
+                            <label for="prenom">Prénom</label><br>
+                            <input type="text" id="prenom" name="prenom" autocomplete="prenom" value="<?php echo $_POST['prenom'] ?? ''; ?>" required>
+                        </div>
+
+                    </div>
+
+                    <div class="fl">
+                        <label for="adresse">Adresse</label><br>
+                        <input type="text" id="adresse" name="adresse" autocomplete="adresse" value="<?php echo $_POST['adresse'] ?? ''; ?>">
+                    </div>
+
+                    <div class="f2pl">
+                        <div>
+                            <label for="ville">Ville</label> <br>
+                            <input type="text" id="ville" name="ville" autocomplete="ville" value="<?php echo $_POST['ville'] ?? ''; ?>">
+                        </div>
+
+                        <div>
+                            <label for="code_postal">Code Postal</label><br>
+                            <input type="text" id="code_postal" name="code_postal" autocomplete="codePostal" value="<?php echo $_POST['code_postal'] ?? ''; ?>" required>
+                        </div>
+
+                    </div>
+
+                    <div class="fl-error">
+                        <?php if (isset($errors['lenght_postal_code'])) { ?>
+                            <p id="error1"><?php echo $errors['lenght_postal_code']; ?></p>
+                        <?php } ?>
+                    </div>
 
 
+                    <div class="f2pl">
+                        <div>
+                            <label for="email">E-mail</label>
+                            <input type="text" id="email" name="email" autocomplete="email" value="<?php echo $_POST['email'] ?? ''; ?>" required>
+                        </div>
+
+                        <div class="fl-error">
+                            <?php if (isset($errors['preg_email'])) { ?>
+                                <p id="error2"><?php echo $errors['preg_email']; ?></p>
+                            <?php } ?>
+                        </div>
+
+                        <div>
+                            <label for="telephone">Téléphone</label>
+                            <input type="text" id="telephone" name="telephone" autocomplete="phone" value="<?php echo $_POST['telephone'] ?? ''; ?>" required>
+                        </div>
+
+                        <div class="fl-error">
+                            <?php if (isset($errors['lenght_phone'])) { ?>
+                                <p id="error3"><?php echo $errors['lenght_phone']; ?></p>
+                            <?php } ?>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button id="button-input" class="grey-button">SUIVANT</button>
+            </div>
 
 
+            <div class="cadre">
+                <p>2. Votre profil</p>
+                <h2>Votre nationalité</h2>
 
-                <div class="f2pl">
-                        <label for="statut">Êtes vous propriétaire d'un bien ?</label required>
-                        <input type="radio" id="oui" name="statut" value="propriétaire" <?php if ($_POST['statut'] === 'homme') { echo 'checked'; } ?>>
-                        <label for="propriétaire">Oui</label>
+                <div class="container container-normal container-column container-input">
+                    <div class="f2pl">
+                        <div>
+                            <label for="date_naissance">Votre date de naissance</label>
+                            <input type="text" id="date_naissance" name="date_naissance" autocomplete="date_naissance" value="<?php echo $_POST['date_naissance'] ?? ''; ?>" placeholder="JJ / MM/ AAAA" required>
 
-                        <input type="radio" id="" name="statut" value="non" <?php if ($_POST['statut'] === 'non') { echo 'checked'; } ?>>
-                        <label for="non">Non</label>
+                            <div class="fl-error">
+                                <?php if (isset($errors['wrong_date'])) { ?>
+                                    <p id="error1"><?php echo $errors['wrong_date']; ?></p>
+                                <?php } ?>
+                            </div>
+                        </div>
 
-                    <select id="facture_energie" name="facture_energie" required>
-                        <option value="">Le montant de votre facture énergétique... <sup>*</sup></option>
-                        <option value="-1000" <?php if($_POST['facture_energie'] === '-1000') echo 'selected'; ?>>- 1 000€</option>
-                        <option value="1000" <?php if($_POST['facture_energie'] === '1000') echo 'selected'; ?>>1 000€</option>
-                        <option value="1500" <?php if($_POST['facture_energie'] === '1500') echo 'selected'; ?>>1 500€</option>
-                        <option value="2000" <?php if($_POST['facture_energie'] === '2000') echo 'selected'; ?>>2 000€</option>
-                        <option value="2500" <?php if($_POST['facture_energie'] === '2500') echo 'selected'; ?>>2 500€</option>
-                        <option value="3000" <?php if($_POST['facture_energie'] === '3000') echo 'selected'; ?>>3 000€</option>
-                        <option value="3500" <?php if($_POST['facture_energie'] === '3500') echo 'selected'; ?>>3 500€</option>
-                        <option value="+3500" <?php if($_POST['facture_energie'] === '+3500') echo 'selected'; ?>>+3 500€</option>
+                        <div>
+                            <label for="ville_naissance">Ville de naissance</label>
+                            <input type="text" id="ville_naissance" name="ville_naissance" autocomplete="ville_naissance" value="<?php echo $_POST['ville_naissance'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="f2pl">
+                        <div>
+                            <label for="pays_naissance">Votre pays de naissance</label>
+                            <input type="text" id="pays_naissance" name="pays_naissance" autocomplete="pays_naissance" value="<?php echo $_POST['pays_naissance'] ?? ''; ?>" required>
+                        </div>
+                        <div>
+                            <label for="nationalite">Votre nationalité</label>
+                            <input type="text" id="nationalite" name="nationalite" autocomplete="nationalite" value="<?php echo $_POST['nationalite'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                    <button id="button-input" class="grey-button">SUIVANT</button>
+
+                </div>
+            </div>
+
+            <div class="cadre">
+                <p>2. Votre profil</p>
+                <h2>Votre situation familiale</h2>
+
+                <div class="container container-normal container-column container-input">
+                    <div class="f2pl">
+
+                        <div>
+                            <label for="objet_fichage">Faites-vous l'objet d'un fichage</label>
+                            <select id="objet_fichage" name="objet_fichage" required>
+                                <option value=""></option>
+                                <option value="aucun" <?php if($_POST['objet_fichage'] === 'aucun') echo 'selected'; ?>>Aucun</option>
+                                <option value="fichage_banque_france" <?php if($_POST['objet_fichage'] === 'fichage_banque_france') echo 'selected'; ?>>Fichage Banque de France</option>
+                                <option value="ficp" <?php if($_POST['objet_fichage'] === 'ficp') echo 'selected'; ?>>Fichage FICP (crédit)</option>
+                                <option value="plan_surendettement" <?php if($_POST['objet_fichage'] === 'plan_surendettement') echo 'selected'; ?>>Plan de surendettement</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="situation_logement">Vous êtes</label>
+                            <select id="situation_logement" name="situation_logement" required>
+                                <option value=""></option>
+                                <option value="proprietaire" <?php if($_POST['situation_logement'] === 'proprietaire') echo 'selected'; ?>>Propriétaire</option>
+                                <option value="locataire" <?php if($_POST['situation_logement'] === 'locataire') echo 'selected'; ?>>Locataire</option>
+                                <option value="heberger" <?php if($_POST['situation_logement'] === 'heberger') echo 'selected'; ?>>Hébergé par un tiers</option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+                    <div class="f2pl">
+
+                        <div id="dimension-nb-enfant">
+                            <label for="nombre_enfant">Nombre d'enfants à charge</label>
+                            <input type="text" id="nombre_enfant" name="nombre_enfant" autocomplete="nombre_enfant" value="<?php echo $_POST['nombre_enfant'] ?? ''; ?>" required>
+                        </div>
+
+                        <div class="fl-error">
+                            <?php if (isset($errors['wrong_enfants'])) { ?>
+                                <p id="error3"><?php echo $errors['wrong_enfants']; ?></p>
+                            <?php } ?>
+                        </div>
+
+                        <div id="dimension-maritale">
+                            <label for="situation_maritale">Situation maritale</label>
+                            <select id="situation_maritale" name="situation_maritale" required>
+                                <option value=""></option>
+                                <option value="celibataire" <?php if($_POST['situation_maritale'] === 'celibataire') echo 'selected'; ?>>Célibataire</option>
+                                <option value="marie" <?php if($_POST['situation_maritale'] === 'marie') echo 'selected'; ?>>Marié</option>
+                                <option value="pacse" <?php if($_POST['situation_maritale'] === 'pacse') echo 'selected'; ?>>Pacsé</option>
+                                <option value="union_libre" <?php if($_POST['situation_maritale'] === 'union_libre') echo 'selected'; ?>>Union Libre</option>
+                                <option value="divorce" <?php if($_POST['situation_maritale'] === 'divorce') echo 'selected'; ?>>Divorcé</option>
+                                <option value="separe" <?php if($_POST['situation_maritale'] === 'separe') echo 'selected'; ?>>Séparé</option>
+                                <option value="veuf" <?php if($_POST['situation_maritale'] === 'veuf') echo 'selected'; ?>>Veuf</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <button id="button-input" class="grey-button">SUIVANT</button>
+
+                </div>
+            </div>
+
+            <div class="cadre">
+                <p>2.Votre profil</p>
+                <h2>Votre situation professionelle</h2>
+
+                <div class="container container-normal">
+                    <label for="profession">Votre profession</label>
+                    <select id="profession" name="profession" required>
+                        <option value=""></option>
+                        <option value="secteur_prive" <?php if($_POST['profession'] === 'secteur_prive') echo 'selected'; ?>>Secteur privé (salarié, ...)</option>
+                        <option value="secteur_publique" <?php if($_POST['profession'] === 'secteur_publique') echo 'selected'; ?>>Secteur publique(fonctionnaire, ...)</option>
+                        <option value="artisans_commercants" <?php if($_POST['profession'] === 'artisans_commercants') echo 'selected'; ?>>Artisans commerçants</option>
+                        <option value="profession_liberale" <?php if($_POST['profession'] === 'profession_liberale') echo 'selected'; ?>>Profession libérale</option>
+                        <option value="secteur_agricole" <?php if($_POST['profession'] === 'secteur_agricole') echo 'selected'; ?>>Secteur agricole</option>
+                        <option value="etudiant" <?php if($_POST['profession'] === 'etudiant') echo 'selected'; ?>>Étudiant</option>
+                        <option value="chomage" <?php if($_POST['profession'] === 'chomage') echo 'selected'; ?>>Chômage</option>
+                        <option value="sans_profession" <?php if($_POST['profession'] === 'sans_profession') echo 'selected'; ?>>Sans profession</option>
+                        <option value="retraite" <?php if($_POST['profession'] === 'retraite') echo 'selected'; ?>>Retraité</option>
+                        <option value="autre" <?php if($_POST['profession'] === 'autre') echo 'selected'; ?>>Autre</option>
                     </select>
                 </div>
 
+                <button class="grey-button">SUIVANT</button>
+            </div>
 
+            <div class="cadre">
 
+                <p>2.Votre profil</p>
+                <h2>Votre situation professionelle</h2>
+                <div class="container container-normal container-column container-input">
 
+                    <div class="f2pl">
+                        <div>
+                            <label for="contrat_de_travail">Contrat de travail</label>
+                            <select id="contrat_de_travail" name="contrat_de_travail" required>
+                                <option value=""></option>
+                                <option value="cdi" <?php if($_POST['contrat_de_travail'] === 'cdi') echo 'selected'; ?>>CDI</option>
+                                <option value="cdd" <?php if($_POST['contrat_de_travail'] === 'cdd') echo 'selected'; ?>>CDD</option>
+                                <option value="interim" <?php if($_POST['contrat_de_travail'] === 'interim') echo 'selected'; ?>>Interim</option>
+                                <option value="cdi_essaie" <?php if($_POST['contrat_de_travail'] === 'cdi_essaie') echo 'selected'; ?>>CDI en période d'essaie</option>
+                                <option value="autre" <?php if($_POST['contrat_de_travail'] === 'autre') echo 'selected'; ?>>Autre</option
+                            </select>
+                            </select>
+                        </div>
 
-
-
-                <div class="fl exeption">
-                    <label for="genre">Genre : </label required>
-                    <input type="radio" id="homme" name="genre" value="homme" <?php if ($_POST['genre'] === 'homme') { echo 'checked'; } ?>>
-                    <label for="homme">Homme</label>
-
-                    <input type="radio" id="femme" name="genre" value="femme" <?php if ($_POST['genre'] === 'femme') { echo 'checked'; } ?>>
-                    <label for="femme">Femme</label>
-
-                    <input type="radio" id="non-defini" name="genre" value="non-defini" <?php if ($_POST['genre'] === 'non-defini') { echo 'checked'; } ?>>
-                    <label for="non-defini">Non défini</label>
-                </div>
-
-                <div class="f2pl">
-                    <input type="text" id="nom" name="nom" placeholder="Nom *" autocomplete="nom" value="<?php echo $nom; ?>" required>
-
-                    <input type="text" id="prenom" name="prenom" placeholder="→Prénom *" autocomplete="prenom" value="<?php echo $_POST['prenom'] ?? ''; ?>" required>
-                </div>
-
-                <div class="fl">
-                    <input type="text" id="adresse" name="adresse" placeholder="Adresse" autocomplete="adresse" value="<?php echo $_POST['adresse'] ?? ''; ?>">
-                </div>
-
-                <div class="f2pl">
-                    <input type="text" id="ville" name="ville" placeholder="Ville" autocomplete="ville" value="<?php echo $_POST['ville'] ?? ''; ?>">
-
-                    <input type="text" id="code_postal" name="code_postal" placeholder="Code Postal *" autocomplete="codePostal" value="<?php echo $_POST['code_postal'] ?? ''; ?>" required>
-                </div>
-
-                <div class="fl-error">
-                    <?php if (isset($errors['lenght_postal_code'])) { ?>
-                        <p id="error1"><?php echo $errors['lenght_postal_code']; ?></p>
-                    <?php } ?>
-                </div>
-
-
-                <div class="fl">
-                    <label for="email"></label>
-                    <input type="text" id="email" name="email" placeholder="Adresse e-mail *" autocomplete="email" value="<?php echo $_POST['email'] ?? ''; ?>" required>
-                </div>
-
-                <div class="fl-error">
-                    <?php if (isset($errors['preg_email'])) { ?>
-                        <p id="error2"><?php echo $errors['preg_email']; ?></p>
-                    <?php } ?>
-                </div>
-
-                <div class="fl">
-                    <label for="telephone"></label>
-                    <input type="text" id="telephone" name="telephone" placeholder="Numéro de téléphone *" autocomplete="phone" value="<?php echo $_POST['telephone'] ?? ''; ?>" required>
-                </div>
-
-                <div class="fl-error">
-                    <?php if (isset($errors['lenght_phone'])) { ?>
-                        <p id="error3"><?php echo $errors['lenght_phone']; ?></p>
-                    <?php } ?>
-                </div>
-
-                <div id="fb">
-                    <div class="exeption" id="acceptations">
-                        <input type="checkbox" id="cgu" name="cgu" <?php if(isset($_POST['offre'])) echo "checked"; ?> required>
-                        <label for="cgu">En validant ce formulaire, vous acceptez d’être rappelé par un conseiller. Les données recueillies sont nécessaires afin de traiter votre demande et, sauf opposition de votre part pourront être utilisées à des fins de prospection commerciale. Conformément au Règlement Général sur la Protection des Données (RGPD), de la loi Informatique et Libertés du 6 janvier 1978 modifiée, vous disposez de droits sur vos données. Reportez-vous à notre Politique de Protection des Données. *</label>
-                        <br><br>
+                        <div>
+                            <label for="anciennete_travail_mois">Ancienneté au travail (en mois) </label>
+                            <input type="text" id="anciennete_travail_mois" name="anciennete_travail_mois" autocomplete="anciennete_travail_mois" value="<?php echo $_POST['anciennete_travail_mois'] ?? ''; ?>" required>
+                        </div>
                     </div>
 
-                    <input type="submit" value="ENVOYER" id="hbutton">
+                    <div class="f2pl">
+                        <div>
+                            <label for="anciennete_travail_annee">Ancienneté au travail (en années) </label>
+                            <input type="text" id="anciennete_travail_annee" name="anciennete_travail_annee" autocomplete="anciennete_travail_annee" value="<?php echo $_POST['anciennete_travail_annee'] ?? ''; ?>" required>
+                        </div>
+
+                        <div>
+                            <label for="revenu_net_mensuel_avant_prelevement">Revenu Net mensuel (avant prélèvement impôt)</label>
+                            <input type="text" id="revenu_net_mensuel_avant_prelevement" name="revenu_net_mensuel_avant_prelevement" autocomplete="revenu_net_mensuel_avant_prelevement" value="<?php echo $_POST['revenu_net_mensuel_avant_prelevement'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                    <label for="frequence_revenus">Fréquence des revenus</label>
+                    <select id="frequence_revenus" name="frequence_revenus"required>
+                        <option value=""></option>
+                        <option value="12_mois" <?php if($_POST['frequence_revenus'] === '12_mois') echo 'selected'; ?>>12 mois</option>
+                        <option value="13_mois" <?php if($_POST['frequence_revenus'] === '13_mois') echo 'selected'; ?>>13 mois</option>
+                        <option value="14_mois" <?php if($_POST['frequence_revenus'] === '14_mois') echo 'selected'; ?>>14 mois</option>
+                        <option value="15_mois" <?php if($_POST['frequence_revenus'] === '15_mois') echo 'selected'; ?>>15 mois</option>
+                        <option value="16_mois" <?php if($_POST['frequence_revenus'] === '16_mois') echo 'selected'; ?>>16 mois</option>
+                    </select>
                 </div>
-            </form>
-        </div>
+
+                <button id="button-input" class="grey-button">SUIVANT</button>
+
+            </div>
+
+            <div class="cadre">
+                <p>2.Votre profil</p>
+                <h2>Empruntez-vous seul ou avec un co-emprunteur ?</h2>
+                <div class="container container-normal container-column">
+                    <label for="emprunt">Choisissez une option</label>
+                    <select id="emprunt" name="emprunt"required>
+                        <option value=""></option>
+                        <option value="seul" <?php if($_POST['emprunt'] === 'seul') echo 'selected'; ?>>Seul</option>
+                        <option value="avec_co_emprunteur" <?php if($_POST['emprunt'] === 'avec_co_emprunteur') echo 'selected'; ?>>Avec un co-emprunteur</option>
+                    </select>
+                </div>
+
+                <button class="grey-button">SUIVANT</button>
+
+            </div>
+
+            <div class="cadre">
+                <p>3.Profil du co-emprunteur</p>
+                <h2>Informations personlles du co-emprunteur</h2>
+
+                <div class="container container-normal container-column container-input">
+                    <div>
+                        <input type="radio" id="homme_" name="genre_co_emprunteur" value="homme_" <?php if ($_POST['genre_co_emprunteur'] === 'homme_') { echo 'checked'; } ?>>
+                        <label for="homme_">Homme</label>
+
+                        <input type="radio" id="femme_" name="genre_co_emprunteur" value="femme_" <?php if ($_POST['genre_co_emprunteur'] === 'femme_') { echo 'checked'; } ?>>
+                        <label for="femme_">Femme</label>
+
+                        <input type="radio" id="non_defini" name="genre_co_emprunteur" value="non_defini" <?php if ($_POST['genre_co_emprunteur'] === 'non_defini') { echo 'checked'; } ?>>
+                        <label for="non_defini" >Non défini</label>
+                    </div>
+
+                    <div class="f2pl">
+                        <div>
+                            <label for="nom_co_emprunteur">Nom</label>
+                            <input type="text" id="nom_co_emprunteur" name="nom_co_emprunteur" autocomplete="nom" value="<?php echo $nom ?? ''; ?>" required>
+                        </div>
+
+                        <div>
+                            <label for="prenom_co_emprunteur">Prénom</label>
+                            <input type="text" id="prenom_co_emprunteur" name="prenom_co_emprunteur" autocomplete="prenom" value="<?php echo $_POST['prenom_co_emprunteur'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                    <button class="grey-button">SUIVANT</button>
+
+                </div>
+            </div>
+
+
+            <div class="cadre">
+                <p>3.Profil du co-emprunter</p>
+                <h2>Nationalité du co-emprunteur</h2>
+                <div class="container container-normal container-column container-input">
+                    <div class="f2pl">
+                        <div>
+                            <label for="date_naissance_co_emprunteur">Date de naissance</label>
+                            <input type="text" id="date_naissance_co_emprunteur" name="date_naissance_co_emprunteur" autocomplete="date_naissance_co_emprunteur" value="<?php echo $_POST['date_naissance_co_emprunteur'] ?? ''; ?>" placeholder="JJ / MM/ AAAA" required>
+
+                            <div class="fl-error">
+                                <?php if (isset($errors['wrong_date_co_emprunteur'])) { ?>
+                                    <p id="error1"><?php echo $errors['wrong_date_co_emprunteur']; ?></p>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="ville_naissance_co_emprunteur">Ville de naissance</label>
+                            <input type="text" id="ville_naissance_co_emprunteur" name="ville_naissance_co_emprunteur" autocomplete="ville_naissance_co_emprunteur" value="<?php echo $_POST['ville_naissance_co_emprunteur'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="f2pl">
+                        <div>
+                            <label for="pays_naissance_co_emprunteur">Pays de naissance</label>
+                            <input type="text" id="pays_naissance_co_emprunteur" name="pays_naissance_co_emprunteur" autocomplete="pays_naissance_co_emprunteur" value="<?php echo $_POST['pays_naissance_co_emprunteur'] ?? ''; ?>" required>
+                        </div>
+
+                        <div>
+                            <label for="nationalite_co_emprunteur">Nationalité</label>
+                            <input type="text" id="nationalite_co_emprunteur" name="nationalite_co_emprunteur" autocomplete="nationalite_co_emprunteur" value="<?php echo $_POST['nationalite_co_emprunteur'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="grey-button">SUIVANT</button>
+
+            </div>
+
+
+
+
+            <div class="cadre">
+                <p>3.Profil du co-emprunteur</p>
+                <h3>Situation professionelle du co-emprunteur</h3>
+
+                <div class="container container-normal container-column container-input">
+                    <div class="f2pl">
+                        <div>
+                            <label for="contrat_de_travail_co_emprunteur">Contrat de travail</label>
+                            <select id="contrat_de_travail_co_emprunteur" name="contrat_de_travail_co_emprunteur" required>
+                                <option value=""></option>
+                                <option value="cdi" <?php if($_POST['contrat_de_travail_co_emprunteur'] === 'cdi') echo 'selected'; ?>>CDI</option>
+                                <option value="cdd" <?php if($_POST['contrat_de_travail_co_emprunteur'] === 'cdd') echo 'selected'; ?>>CDD</option>
+                                <option value="interim" <?php if($_POST['contrat_de_travail_co_emprunteur'] === 'interim') echo 'selected'; ?>>Interim</option>
+                                <option value="cdi_essaie" <?php if($_POST['contrat_de_travail_co_emprunteur'] === 'cdi_essaie') echo 'selected'; ?>>CDI en période d'essaie</option>
+                                <option value="autre" <?php if($_POST['contrat_de_travail_co_emprunteur'] === 'autre') echo 'selected'; ?>>Autre</option
+                            </select>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="anciennete_travail_mois_co_emprunteur">Ancienneté au travail (en mois) </label>
+                            <input type="text" id="anciennete_travail_mois_co_emprunteur" name="anciennete_travail_mois_co_emprunteur" autocomplete="anciennete_travail_mois_co_emprunteur" value="<?php echo $_POST['anciennete_travail_mois_co_emprunteur'] ?? ''; ?>" required>
+                        </div>
+                    </div>
+
+                    <div class="f2pl">
+                        <div>
+                            <label for="anciennete_travail_annee_co_emprunteur">Ancienneté au travail (en années) </label>
+                            <input type="text" id="anciennete_travail_annee_co_emprunteur" name="anciennete_travail_annee_co_emprunteur" autocomplete="anciennete_travail_annee_co_emprunteur" value="<?php echo $_POST['anciennete_travail_annee_co_emprunteur'] ?? ''; ?>" required>
+                        </div>
+
+                        <div>
+                            <label for="revenu_net_mensuel_avant_prelevement_co_emprunteur">Revenu Net mensuel (avant prélèvement impôt)</label>
+                            <input type="text" id="revenu_net_mensuel_avant_prelevement_co_emprunteur" name="revenu_net_mensuel_avant_prelevement_co_emprunteur" autocomplete="revenu_net_mensuel_avant_prelevement_co_emprunteur" value="<?php echo $_POST['revenu_net_mensuel_avant_prelevement_co_emprunteur'] ?? ''; ?>" required>
+                        </div>
+
+                    </div>
+
+                    <label for="frequence_revenus_co_emprunteur">Fréquence des revenus</label>
+                    <select id="frequence_revenus_co_emprunteur" name="frequence_revenus_co_emprunteur"required>
+                        <option value=""></option>
+                        <option value="12_mois" <?php if($_POST['frequence_revenus_co_emprunteur'] === '12_mois') echo 'selected'; ?>>12 mois</option>
+                        <option value="13_mois" <?php if($_POST['frequence_revenus_co_emprunteur'] === '13_mois') echo 'selected'; ?>>13 mois</option>
+                        <option value="14_mois" <?php if($_POST['frequence_revenus_co_emprunteur'] === '14_mois') echo 'selected'; ?>>14 mois</option>
+                        <option value="15_mois" <?php if($_POST['frequence_revenus_co_emprunteur'] === '15_mois') echo 'selected'; ?>>15 mois</option>
+                        <option value="16_mois" <?php if($_POST['frequence_revenus_co_emprunteur'] === '16_mois') echo 'selected'; ?>>16 mois</option>
+                    </select>
+                </div>
+                <button class="grey-button">SUIVANT</button>
+
+            </div>
+
+
+            <div id="fb">
+                <div class="exeption" id="acceptations">
+                    <input type="checkbox" id="cgu" name="cgu" <?php if(isset($_POST['offre'])) echo "checked"; ?> required>
+                    <label for="cgu">En validant ce formulaire, vous acceptez d’être rappelé par un conseiller. Les données recueillies sont nécessaires afin de traiter votre demande et, sauf opposition de votre part pourront être utilisées à des fins de prospection commerciale. Conformément au Règlement Général sur la Protection des Données (RGPD), de la loi Informatique et Libertés du 6 janvier 1978 modifiée, vous disposez de droits sur vos données. Reportez-vous à notre Politique de Protection des Données. *</label>
+                    <br><br>
+                </div>
+
+                <input type="submit" value="ENVOYER" id="hbutton">
+            </div>
+        </form>
+    </div>
 </header>

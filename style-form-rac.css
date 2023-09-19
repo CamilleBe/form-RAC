@@ -1,0 +1,179 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    list-style-type: none;
+    text-decoration: none;
+    color: #343434;
+}
+
+h1 {
+    margin-top: 50px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 35px;
+}
+
+#phrase-form {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+/*CADRE*/
+
+.cadre {
+    width: 40%;
+    margin: auto;
+    border-radius: 10px;
+    height: 400px;
+    padding: 40px 75px 75px 75px;
+
+    box-shadow: 1px 1px 25px 8px rgba(0,0,0,0.35);
+    -webkit-box-shadow: 1px 1px 25px 1px rgba(0,0,0,0.35);
+    -moz-box-shadow: 1px 1px 25px 8px rgba(0,0,0,0.35);
+    text-align: center;
+}
+
+h2 {
+    margin-top: 50px;
+}
+
+.cadre p {
+    color: #285CA9;
+    font-weight: bold;
+}
+
+.container {
+    display: flex;
+    /*align-items: center;*/
+    justify-content: center;
+    flex-direction: row;
+    margin-top: 100px;
+    gap: 35px;
+}
+
+/* INPUT RADIO*/
+
+.radio input[type="radio"] {
+    cursor: pointer;
+    display: none;
+}
+
+.style-label {
+    border: 2px solid #285CA9;
+    border-radius: 10px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100px;
+    height: 35px;
+    font-size: 20px;
+}
+
+.style-label:before {
+    content: "";
+    height: 20px;
+    width: 20px;
+    border: 3px solid #285CA9;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.radio input[type="radio"]:checked + .style-label {
+    background-color: #285CA9;
+    color: white;
+}
+
+.radio input[type="radio"]:checked + .style-label:before {
+    height: 16px;
+    width: 16px;
+    border: 7px solid white;
+    background-color: #285CA9;
+}
+
+
+/*BUTTON*/
+.grey-button {
+    margin-top: 100px;
+    padding: 12px 35px;
+    border: none;
+    background-color: #656565;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 450;
+    cursor: pointer;
+}
+
+.grey-button:hover {
+    background-color: #8c8c8c;
+}
+
+/* CONTAINER NORMAL */
+
+.container-normal {
+    gap: 15px;
+    font-size: 20px;
+    align-items: center;
+}
+
+/*LISTE DEROULANTE */
+
+.container select {
+    padding: 10px 15px;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: #285CA9;
+}
+
+.container select, .container option {
+    font-size: 16px;
+    color: white;
+}
+
+.container-column {
+    flex-direction:  column;
+}
+
+/*CONTAINER INPUT*/
+
+input {
+    padding: 10px 10px;
+    border: 1px solid #285CA9;
+    border-radius: 5px;
+}
+
+.container-input {
+    margin-top: 50px;
+}
+
+.f2pl {
+    display: flex;
+    gap: 20px;
+}
+
+.f2pl div, .fl {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 5px;
+    text-align: left;
+}
+
+.fl-top {
+    margin-top: 20px;
+}
+
+#button-input {
+    margin-top: 50px;
+}
+
+/*DIMENSION SPECIFIQUE DU FORMULAIRE*/
+#dimension-nb-enfant {
+    width: 270px;
+}
+
+#dimension-maritale {
+    width: 197px;
+}
