@@ -8,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if(currentQuestions) {
             currentQuestions.style.display = 'none';
+            console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
+
 
             //Incrémenter l'étaope actuelle
             currentStep++;
@@ -17,6 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (nextQuestion) {
                 nextQuestion.style.display = 'block';
+                console.log("le block " + nextQuestion.getAttribute("data-step") + " apparait");
+            }
+            else {
+                console.log("Bloc de questions introuvable pour l'étape : " + currentStep);
             }
         }
     }
@@ -24,9 +30,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // Associez cette fonction à l'événement click du bouton
     const button = document.querySelector(".grey-button");
 
-    if (button) {
+    button.addEventListener("click", nextStep);
+
+    /*if (button) {
         button.addEventListener("click", nextStep);
     }
+    else {
+        console.log("Bouton non trouvé.");
+    }*/
 
 });
 

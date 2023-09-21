@@ -393,7 +393,7 @@ $email = $_POST['email'] ?? "";
 
                 </div>
 
-                <button id="button-input" class="grey-button">SUIVANT</button>
+                <button id="button-input" class="grey-button" onclick="nextStep()">SUIVANT</button>
 
             </div>
 
@@ -865,15 +865,21 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div id="fb">
-                <div class="exeption" id="acceptations">
-                    <input type="checkbox" id="cgu" name="cgu" <?php if(isset($_POST['offre'])) echo "checked"; ?> required>
-                    <label for="cgu">En validant ce formulaire, vous acceptez d’être rappelé par un conseiller. Les données recueillies sont nécessaires afin de traiter votre demande et, sauf opposition de votre part pourront être utilisées à des fins de prospection commerciale. Conformément au Règlement Général sur la Protection des Données (RGPD), de la loi Informatique et Libertés du 6 janvier 1978 modifiée, vous disposez de droits sur vos données. Reportez-vous à notre Politique de Protection des Données. *</label>
-                    <br><br>
-                </div>
+            <div class="cadre">
+                <div id="fb">
+                    <div class="exeption" id="acceptations">
+                        <input type="checkbox" id="cgu" name="cgu" <?php if(isset($_POST['offre'])) echo "checked"; ?> required>
+                        <label for="cgu">En validant ce formulaire, vous acceptez d’être rappelé par un conseiller. Les données recueillies sont nécessaires afin de traiter votre demande et, sauf opposition de votre part pourront être utilisées à des fins de prospection commerciale. Conformément au Règlement Général sur la Protection des Données (RGPD), de la loi Informatique et Libertés du 6 janvier 1978 modifiée, vous disposez de droits sur vos données. Reportez-vous à notre Politique de Protection des Données. *</label>
+                        <br><br>
+                    </div>
 
-                <input type="submit" value="ENVOYER" id="hbutton">
+                    <input type="submit" value="ENVOYER" id="hbutton">
+            </div>
+
             </div>
         </form>
     </div>
+
 </header>
+</body>
+</html>
