@@ -21,6 +21,10 @@ h1 {
 
 /*CADRE*/
 
+#display-style {
+    display: block;
+}
+
 .cadre {
     width: 40%;
     margin: auto;
@@ -32,6 +36,8 @@ h1 {
     -webkit-box-shadow: 1px 1px 25px 1px rgba(0,0,0,0.35);
     -moz-box-shadow: 1px 1px 25px 8px rgba(0,0,0,0.35);
     text-align: center;
+
+    display: none;
 }
 
 h2 {

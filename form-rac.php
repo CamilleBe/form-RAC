@@ -282,32 +282,17 @@ $email = $_POST['email'] ?? "";
 ?>
 
 <!DOCTYPE html>
+
 <html lang="fr" xmlns="http://www.w3.org/1999/html">
+
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-TTKG7XR');</script>
-    <!-- End Google Tag Manager -->
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJVDX1493G"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-YJVDX1493G');
-    </script>
-
     <meta charset="UTF-8">
     <title>Rachat de crédits</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="style-form-rac.css">
+    <script src="form-logic.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -340,7 +325,7 @@ $email = $_POST['email'] ?? "";
 
             <input type="hidden" name="client_id" id="clientIdInput" value="">
 
-            <div class="cadre">
+            <div class="cadre" data-step="step1" id="display-style">
                 <p>1. Vos crédits</p>
                 <h2>Êtes vous propriétaire d'un bien ?</h2>
 
@@ -351,11 +336,11 @@ $email = $_POST['email'] ?? "";
                     <input type="radio" id="non" name="statut" value="non" <?php if ($_POST['statut'] === 'non') { echo 'checked'; } ?>>
                     <label for="non" class="style-label">Non</label>
                 </div>
-                <button class="grey-button">SUIVANT</button>
+                <button class="grey-button" onclick="nextStep()">SUIVANT</button>
             </div>
 
 
-            <div class="cadre">
+            <div class="cadre questionsImmobilier" data-step="step2">
                 <p>1. Vos crédits</p>
                 <h2>Combien de crédits immobiliers avez vous ?</h2>
 
@@ -377,11 +362,11 @@ $email = $_POST['email'] ?? "";
                     </select>
 
                 </div>
-                <button class="grey-button">SUIVANT</button>
+                <button class="grey-button" onclick="nextStep()">SUIVANT</button>
 
             </div>
 
-            <div class="cadre">
+            <div class="cadre questionsImmobilier" data-step="step3">
 
                 <p>1. Vos crédits</p>
                 <h2>Détails des crédits immobiliers</h2>
