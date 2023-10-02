@@ -1,3 +1,5 @@
+4. ALGORITHME 1 : Problème : vérification des champs obligatoires qui se font quand même même sur les bloc qui ont été sautés
+
 document.addEventListener("DOMContentLoaded", function () {
 
     let currentStep = 1; //Initialise létape actuelle à 1
