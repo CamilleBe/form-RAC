@@ -27,12 +27,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //Condition naissance
-    if (!preg_match("~^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19[2-9][0-9]|200[0-7])$~", $_POST['date_naissance'])) {
+    if (!preg_match("~^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19[2-9][0-9]|200[0-3])$~", $_POST['date_naissance'])) {
         $errors['wrong_date'] = "Veuillez rentrer une date de naissance valide";
     }
 
     //Condition naissance co-emprunteur
-    if (!preg_match("~^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19[2-9][0-9]|200[0-7])$~", $_POST['date_naissance_co_emprunteur'])) {
+    if (!preg_match("~^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19[2-9][0-9]|200[0-3])$~", $_POST['date_naissance_co_emprunteur'])) {
         $errors['wrong_date_co_emprunteur'] = "Veuillez rentrer une date de naissance valide";
     }
 
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
 
             $query_params = array(
-                ':status' => $_POST['status'],
+                ':statut' => $_POST['statut'],
 
                 ':credit_immobilier' => $_POST['credit_immobilier'],
                 ':mensualites_credits_immobiliers' => $_POST['mensualites_credits_immobiliers'],
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
 
             $query = $dbh->prepare('INSERT INTO rac(
-                                                        status,
+                                                        statut,
                                                         credit_immobilier,
                                                         mensualites_credits_immobiliers,
                                                         total_restant_credits_immobiliers,
@@ -158,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         date,
                                                         client_id
                                                     ) VALUES(
-                                                        :status,
+                                                        :statut,
                                                         :credit_immobilier,
                                                         :mensualites_credits_immobiliers,
                                                         :total_restant_credits_immobiliers,
@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 /* CREATE TABLE rac (
-    status VARCHAR(255),
+    statut VARCHAR(255),
     credit_immobilier VARCHAR(255),
     mensualites_credits_immobiliers DECIMAL(10, 2),
     total_restant_credits_immobiliers DECIMAL(10, 2),
@@ -282,17 +282,15 @@ $email = $_POST['email'] ?? "";
 ?>
 
 <!DOCTYPE html>
-
 <html lang="fr" xmlns="http://www.w3.org/1999/html">
-
 <head>
     <meta charset="UTF-8">
     <title>Rachat de crédits</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="style-form-rac.css">
-    <script src="form-logic.js"></script>
+    <link rel="stylesheet" href="./style-form-rac.css">
+    <script src="./form-logic.js"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -336,7 +334,7 @@ $email = $_POST['email'] ?? "";
                     <input type="radio" id="non" name="statut" value="non" <?php if ($_POST['statut'] === 'non') { echo 'checked'; } ?>>
                     <label for="non" class="style-label">Non</label>
                 </div>
-                <button class="grey-button" onclick="nextStep()">SUIVANT</button>
+                <button class="grey-button">SUIVANT</button>
             </div>
 
 
@@ -362,7 +360,7 @@ $email = $_POST['email'] ?? "";
                     </select>
 
                 </div>
-                <button class="grey-button" onclick="nextStep()">SUIVANT</button>
+                <button class="grey-button">SUIVANT</button>
 
             </div>
 
@@ -393,11 +391,11 @@ $email = $_POST['email'] ?? "";
 
                 </div>
 
-                <button id="button-input" class="grey-button" onclick="nextStep()">SUIVANT</button>
+                <button id="button-input" class="grey-button">SUIVANT</button>
 
             </div>
 
-            <div class="cadre">
+            <div class="cadre" data-step="step4">
 
                 <p>1. Vos crédits</p>
                 <h2>Combien de crédits à la consommation avez vous ?</h2>
@@ -426,7 +424,7 @@ $email = $_POST['email'] ?? "";
 
             </div>
 
-            <div class="cadre">
+            <div class="cadre" data-step="step5">
                 <p>1. Vos crédits</p>
                 <h2>Détails des crédits à la consommation</h2>
 
@@ -455,7 +453,7 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div class="cadre">
+            <div class="cadre" data-step="step6">
                 <p>2. Votre profil</p>
                 <h2>Détails de vos informations personnelles</h2>
 
@@ -539,7 +537,7 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div class="cadre">
+            <div class="cadre" data-step="step7">
                 <p>2. Votre profil</p>
                 <h2>Votre nationalité</h2>
 
@@ -547,7 +545,7 @@ $email = $_POST['email'] ?? "";
                     <div class="f2pl">
                         <div>
                             <label for="date_naissance">Votre date de naissance</label>
-                            <input type="text" id="date_naissance" name="date_naissance" autocomplete="date_naissance" value="<?php echo $_POST['date_naissance'] ?? ''; ?>" placeholder="JJ / MM/ AAAA" required>
+                            <input type="text" id="date_naissance" name="date_naissance" autocomplete="date_naissance" value="<?php echo $_POST['date_naissance'] ?? ''; ?>" placeholder="JJ/MM/AAAA" required>
 
                             <div class="fl-error">
                                 <?php if (isset($errors['wrong_date'])) { ?>
@@ -578,7 +576,7 @@ $email = $_POST['email'] ?? "";
                 </div>
             </div>
 
-            <div class="cadre">
+            <div class="cadre" data-step="step8">
                 <p>2. Votre profil</p>
                 <h2>Votre situation familiale</h2>
 
@@ -642,7 +640,7 @@ $email = $_POST['email'] ?? "";
                 </div>
             </div>
 
-            <div class="cadre">
+            <div class="cadre" data-step="step9">
                 <p>2.Votre profil</p>
                 <h2>Votre situation professionelle</h2>
 
@@ -666,7 +664,7 @@ $email = $_POST['email'] ?? "";
                 <button class="grey-button">SUIVANT</button>
             </div>
 
-            <div class="cadre">
+            <div class="cadre" data-step="step10">
 
                 <p>2.Votre profil</p>
                 <h2>Votre situation professionelle</h2>
@@ -719,7 +717,7 @@ $email = $_POST['email'] ?? "";
 
             </div>
 
-            <div class="cadre">
+            <div class="cadre" data-step="step11">
                 <p>2.Votre profil</p>
                 <h2>Empruntez-vous seul ou avec un co-emprunteur ?</h2>
                 <div class="container container-normal container-column">
@@ -735,7 +733,7 @@ $email = $_POST['email'] ?? "";
 
             </div>
 
-            <div class="cadre">
+            <div class="cadre" data-step="step12">
                 <p>3.Profil du co-emprunteur</p>
                 <h2>Informations personlles du co-emprunteur</h2>
 
@@ -769,14 +767,14 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div class="cadre">
+            <div class="cadre" data-step="step13">
                 <p>3.Profil du co-emprunter</p>
                 <h2>Nationalité du co-emprunteur</h2>
                 <div class="container container-normal container-column container-input">
                     <div class="f2pl">
                         <div>
                             <label for="date_naissance_co_emprunteur">Date de naissance</label>
-                            <input type="text" id="date_naissance_co_emprunteur" name="date_naissance_co_emprunteur" autocomplete="date_naissance_co_emprunteur" value="<?php echo $_POST['date_naissance_co_emprunteur'] ?? ''; ?>" placeholder="JJ / MM/ AAAA" required>
+                            <input type="text" id="date_naissance_co_emprunteur" name="date_naissance_co_emprunteur" autocomplete="date_naissance_co_emprunteur" value="<?php echo $_POST['date_naissance_co_emprunteur'] ?? ''; ?>" placeholder="JJ/MM/AAAA" required>
 
                             <div class="fl-error">
                                 <?php if (isset($errors['wrong_date_co_emprunteur'])) { ?>
@@ -810,9 +808,7 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-
-
-            <div class="cadre">
+            <div class="cadre" data-step="step14">
                 <p>3.Profil du co-emprunteur</p>
                 <h3>Situation professionelle du co-emprunteur</h3>
 
@@ -865,7 +861,7 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div class="cadre">
+            <div class="cadre" data-step="step15">
                 <div id="fb">
                     <div class="exeption" id="acceptations">
                         <input type="checkbox" id="cgu" name="cgu" <?php if(isset($_POST['offre'])) echo "checked"; ?> required>
@@ -874,7 +870,7 @@ $email = $_POST['email'] ?? "";
                     </div>
 
                     <input type="submit" value="ENVOYER" id="hbutton">
-            </div>
+                </div>
 
             </div>
         </form>
