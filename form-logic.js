@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (allFieldsCompleted) {
                         // Masque le bloc de questions actuel en fonction de l'étape actuelle
-
+                        
                         if (currentQuestions) {
                             currentQuestions.style.display = 'none';
                             console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
@@ -116,6 +116,32 @@ document.addEventListener("DOMContentLoaded", function () {
                             console.log("Bloc de questions introuvable pour l'étape : " + currentStep);
                         }
                     }
+                }
+            } else {
+                if (allFieldsCompleted) {
+                    // Masque le bloc de questions actuel en fonction de l'étape actuelle
+
+                    if(currentQuestions) {
+                        currentQuestions.style.display = 'none';
+                        console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
+
+
+                        //Incrémenter l'étaope actuelle
+                        currentStep++;
+
+                        //Affiche le bloc de question de la prochaine étape en fonction de l'étape actuelle
+                        const nextQuestion = document.querySelector('[data-step="step' + currentStep + '"]');
+
+                        if (nextQuestion) {
+                            nextQuestion.style.display = 'block';
+                            console.log("le block " + nextQuestion.getAttribute("data-step") + " apparait");
+                        }
+                        else {
+                            console.log("Bloc de questions introuvable pour l'étape : " + currentStep);
+                        }
+                    }
+                } else {
+                    alert('Veuillez compléter tous les champs requis avant de continuer.');
                 }
             }
         }
