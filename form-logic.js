@@ -61,8 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
+            //Capturer la valeur du bouton radio statut
+            let response_step1 = document.querySelector('input[name="statut"]:checked').value;
+
             if (currentStep === 1) {
-                const response_step1 = document.querySelector('input[name="statut"]:checked').value;
 
                 if (response_step1 === "proprietaire") {
                     // Logique pour afficher step2 et cacher step1
@@ -70,38 +72,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     if (allFieldsCompleted) {
                         // Masque le bloc de questions actuel en fonction de l'étape actuelle
 
-                        currentQuestions.style.display = 'none';
-                        console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
+                        if (currentQuestions) {
+                            currentQuestions.style.display = 'none';
+                            console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
 
 
-                        //Incrémenter l'étape actuelle
-                        currentStep++;
+                            //Incrémenter l'étape actuelle
+                            currentStep++;
 
-                        //Affiche le bloc de question de la prochaine étape en fonction de l'étape actuelle
-                        const nextQuestion = document.querySelector('[data-step="step' + currentStep + '"]');
-
-                        if (nextQuestion) {
-                            nextQuestion.style.display = 'block';
-                            console.log("le block " + nextQuestion.getAttribute("data-step") + " apparait");
-                        } else {
-                            console.log("Bloc de questions introuvable pour l'étape : " + currentStep);
-                        }
-                    }
-
-                } else {
-                    alert('Veuillez compléter tous les champs requis avant de continuer.');
-
-
-                        // Masque le bloc de questions actuel en fonction de l'étape actuelle
-
-                        currentQuestions.style.display = 'none';
-                        console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
-
-
-                        //Incrémenter l'étape actuelle
-                        currentStep = 4;
-
-                        if (allFieldsCompleted) {
                             //Affiche le bloc de question de la prochaine étape en fonction de l'étape actuelle
                             const nextQuestion = document.querySelector('[data-step="step' + currentStep + '"]');
 
@@ -112,23 +90,40 @@ document.addEventListener("DOMContentLoaded", function () {
                                 console.log("Bloc de questions introuvable pour l'étape : " + currentStep);
                             }
                         }
-                }
-
-
+                    } else {
+                        alert('Veuillez compléter tous les champs requis avant de continuer.');
+                    }
                 } else {
-                    // Logique pour cacher step1 et afficher directement step3
+                    // Passer du bloc1 au bloc4
+                    // Masque le bloc de questions actuel en fonction de l'étape actuelle
 
+                    currentQuestions.style.display = 'none';
+                    console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
+
+
+                    //Incrémenter l'étape actuelle
+                    currentStep = 3;
+                    currentStep++;
+
+                    if (allFieldsCompleted) {
+                        //Affiche le bloc de question de la prochaine étape en fonction de l'étape actuelle
+                        const nextQuestion = document.querySelector('[data-step="step' + currentStep + '"]');
+
+                        if (nextQuestion) {
+                            nextQuestion.style.display = 'block';
+                            console.log("le block " + nextQuestion.getAttribute("data-step") + " apparait");
+                        } else {
+                            console.log("Bloc de questions introuvable pour l'étape : " + currentStep);
+                        }
+                    }
                 }
-                return; // Terminez la fonction ici car vous avez déjà géré la logique de navigation pour step1
-
-
             }
         }
-
+    }
     // Associez cette fonction à l'événement click du bouton
     const buttons = document.querySelectorAll(".grey-button");
 
     buttons.forEach(button => {
         button.addEventListener("click", nextStep);
-    });
+    })
 });
