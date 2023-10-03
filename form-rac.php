@@ -486,6 +486,15 @@ $email = $_POST['email'] ?? "";
                         <label for="adresse">Adresse</label><br>
                         <input type="text" id="adresse" name="adresse" autocomplete="adresse" value="<?php echo $_POST['adresse'] ?? ''; ?>">
                     </div>
+                </div>
+
+                <button id="button-input" class="grey-button">SUIVANT</button>
+            </div>
+            <div class="cadre" data-step="step7">
+                <p>2. Votre profil</p>
+                <h2>Détails de vos informations personnelles</h2>
+
+                <div class="container container-normal container-column container-input">
 
                     <div class="f2pl">
                         <div>
@@ -500,34 +509,15 @@ $email = $_POST['email'] ?? "";
 
                     </div>
 
-                    <div class="fl-error">
-                        <?php if (isset($errors['lenght_postal_code'])) { ?>
-                            <p id="error1"><?php echo $errors['lenght_postal_code']; ?></p>
-                        <?php } ?>
-                    </div>
-
-
                     <div class="f2pl">
                         <div>
                             <label for="email">E-mail</label>
                             <input type="text" id="email" name="email" autocomplete="email" value="<?php echo $_POST['email'] ?? ''; ?>" required>
                         </div>
 
-                        <div class="fl-error">
-                            <?php if (isset($errors['preg_email'])) { ?>
-                                <p id="error2"><?php echo $errors['preg_email']; ?></p>
-                            <?php } ?>
-                        </div>
-
                         <div>
                             <label for="telephone">Téléphone</label>
                             <input type="text" id="telephone" name="telephone" autocomplete="phone" value="<?php echo $_POST['telephone'] ?? ''; ?>" required>
-                        </div>
-
-                        <div class="fl-error">
-                            <?php if (isset($errors['lenght_phone'])) { ?>
-                                <p id="error3"><?php echo $errors['lenght_phone']; ?></p>
-                            <?php } ?>
                         </div>
                     </div>
 
@@ -537,7 +527,7 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div class="cadre" data-step="step7">
+            <div class="cadre" data-step="step8">
                 <p>2. Votre profil</p>
                 <h2>Votre nationalité</h2>
 
@@ -576,7 +566,7 @@ $email = $_POST['email'] ?? "";
                 </div>
             </div>
 
-            <div class="cadre" data-step="step8">
+            <div class="cadre" data-step="step9">
                 <p>2. Votre profil</p>
                 <h2>Votre situation familiale</h2>
 
@@ -640,7 +630,7 @@ $email = $_POST['email'] ?? "";
                 </div>
             </div>
 
-            <div class="cadre" data-step="step9">
+            <div class="cadre" data-step="step10">
                 <p>2.Votre profil</p>
                 <h2>Votre situation professionelle</h2>
 
@@ -664,7 +654,7 @@ $email = $_POST['email'] ?? "";
                 <button class="grey-button">SUIVANT</button>
             </div>
 
-            <div class="cadre" data-step="step10">
+            <div class="cadre cadre-height-exeption" data-step="step11">
 
                 <p>2.Votre profil</p>
                 <h2>Votre situation professionelle</h2>
@@ -717,7 +707,7 @@ $email = $_POST['email'] ?? "";
 
             </div>
 
-            <div class="cadre" data-step="step11">
+            <div class="cadre" data-step="step12">
                 <p>2.Votre profil</p>
                 <h2>Empruntez-vous seul ou avec un co-emprunteur ?</h2>
                 <div class="container container-normal container-column">
@@ -733,7 +723,7 @@ $email = $_POST['email'] ?? "";
 
             </div>
 
-            <div class="cadre" data-step="step12">
+            <div class="cadre" data-step="step13">
                 <p>3.Profil du co-emprunteur</p>
                 <h2>Informations personlles du co-emprunteur</h2>
 
@@ -767,7 +757,7 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div class="cadre" data-step="step13">
+            <div class="cadre" data-step="step14">
                 <p>3.Profil du co-emprunter</p>
                 <h2>Nationalité du co-emprunteur</h2>
                 <div class="container container-normal container-column container-input">
@@ -808,7 +798,7 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div class="cadre" data-step="step14">
+            <div class="cadre cadre-height-exeption" data-step="step15">
                 <p>3.Profil du co-emprunteur</p>
                 <h3>Situation professionelle du co-emprunteur</h3>
 
@@ -861,7 +851,7 @@ $email = $_POST['email'] ?? "";
             </div>
 
 
-            <div class="cadre" data-step="step15">
+            <div class="cadre" data-step="step16">
                 <div id="fb">
                     <div class="exeption" id="acceptations">
                         <input type="checkbox" id="cgu" name="cgu" <?php if(isset($_POST['offre'])) echo "checked"; ?> required>

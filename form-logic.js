@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (allFieldsCompleted) {
                         // Masque le bloc de questions actuel en fonction de l'étape actuelle
-                        
+
                         if (currentQuestions) {
                             currentQuestions.style.display = 'none';
                             console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
@@ -100,6 +100,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     currentQuestions.style.display = 'none';
                     console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
 
+                    // Supprimer l'attribut 'required' pour tous les champs des étapes 2 et 3
+                    const step2Fields = document.querySelectorAll('[data-step="step2"] [required]');
+                    const step3Fields = document.querySelectorAll('[data-step="step3"] [required]');
+
+                    step2Fields.forEach(field => field.removeAttribute('required'));
+                    step3Fields.forEach(field => field.removeAttribute('required'));
 
                     //Incrémenter l'étape actuelle
                     currentStep = 3;
