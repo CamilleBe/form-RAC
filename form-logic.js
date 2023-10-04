@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let response_step1 = document.querySelector('input[name="statut"]:checked').value;
 
 
+            // Algorithme 1
             if (currentStep === 1) {
 
                 if (response_step1 === "proprietaire") {
@@ -125,6 +126,79 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                     }
                 }
+
+                // Algorithme 2
+            } else if (currentStep === 10) {
+
+                const responseStep10 = document.querySelector('select[name="profession"]').value;
+                console.log(responseStep10);
+
+                if (responseStep10 === "sans_profession") {
+
+
+                        // Masque le bloc de questions actuel en fonction de l'étape actuelle
+
+                        if (currentQuestions) {
+
+                            currentQuestions.style.display = 'none';
+                            console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
+
+
+                            //On enlève l'attribut required
+                            const step11Fields = document.querySelectorAll('[data-step="step11"][required]');
+
+                            step11Fields.forEach(field => field.removeAttribute('required'));
+
+                            //Incrémenter l'étape actuelle
+                            currentStep = 11;
+                            currentStep++;
+
+                            if (allFieldsCompleted) {
+                            //Affiche le bloc de question de la prochaine étape en fonction de l'étape actuelle
+                            const nextQuestion = document.querySelector('[data-step="step' + currentStep + '"]');
+
+                            const step11Fields = document.querySelectorAll('[data-step="step11"] [required]');
+                            step11Fields.forEach(field => field.removeAttribute('required'));
+
+
+                            if (nextQuestion) {
+                                nextQuestion.style.display = 'block';
+                                console.log("le block " + nextQuestion.getAttribute("data-step") + " apparait");
+                            } else {
+                                console.log("Bloc de questions introuvable pour l'étape : " + currentStep);
+                            }
+                        }
+                    } else {
+                        alert('Veuillez compléter tous les champs requis avant de continuer.');
+                    }
+
+                } else {
+
+                    if (allFieldsCompleted) {
+                        if (currentQuestions) {
+
+                            currentQuestions.style.display = 'none';
+                            console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
+
+
+                            currentStep++;
+
+                            const nextQuestion = document.querySelector('[data-step = "step' + currentStep + '"]');
+
+                            if (nextQuestion) {
+                                nextQuestion.style.display = 'block';
+                                console.log("le block " + nextQuestion.getAttribute("data-step") + " apparait");
+                            } else {
+                                console.log("Bloc de questions introuvable pour l'étape : " + currentStep);
+                            }
+                        }
+
+                    } else {
+                        alert('Veuillez compléter tous les champs requis avant de continuer.');
+                    }
+
+                }
+
             } else {
                 if (allFieldsCompleted) {
                     // Masque le bloc de questions actuel en fonction de l'étape actuelle

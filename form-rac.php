@@ -61,6 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Ajoutez d'autres champs si nécessaire
             }
 
+            if ($_POST['profession'] === 'sans_profession') {
+                $_POST['contrat_de_travail'] = "0";
+                $_POST['anciennete_travail_mois'] = "0.00";
+                $_POST['anciennete_travail_annee'] = "0.00";
+                $_POST['revenu_net_mensuel_avant_prelevement'] = "0.00";
+                $_POST['frequence_revenus'] = "0";
+            }
+
             // Code de débogage pour vérifier si la condition est exécutée
             echo ($_POST['statut'] === 'non') ? "Condition is true" : "Condition is false";
 
@@ -99,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':nombre_enfant' => $_POST['nombre_enfant'],
 
                 ':profession' => $_POST['profession'],
+
                 ':contrat_de_travail' => $_POST['contrat_de_travail'],
                 ':anciennete_travail_mois' => $_POST['anciennete_travail_mois'],
                 ':anciennete_travail_annee' => $_POST['anciennete_travail_annee'],
@@ -688,9 +697,11 @@ $email = $_POST['email'] ?? "";
                                 <option value="cdd" <?php if($_POST['contrat_de_travail'] === 'cdd') echo 'selected'; ?>>CDD</option>
                                 <option value="interim" <?php if($_POST['contrat_de_travail'] === 'interim') echo 'selected'; ?>>Interim</option>
                                 <option value="cdi_essaie" <?php if($_POST['contrat_de_travail'] === 'cdi_essaie') echo 'selected'; ?>>CDI en période d'essaie</option>
-                                <option value="autre" <?php if($_POST['contrat_de_travail'] === 'autre') echo 'selected'; ?>>Autre</option
+                                <option value="autre" <?php if($_POST['contrat_de_travail'] === 'autre') echo 'selected'; ?>>Autre</option>
+                                <option value="0" <?php if($_POST['contrat_de_travail'] === '0') echo 'selected'; ?> hidden >0</option>
+
                             </select>
-                            </select>
+
                         </div>
 
                         <div>
@@ -719,6 +730,8 @@ $email = $_POST['email'] ?? "";
                         <option value="14_mois" <?php if($_POST['frequence_revenus'] === '14_mois') echo 'selected'; ?>>14 mois</option>
                         <option value="15_mois" <?php if($_POST['frequence_revenus'] === '15_mois') echo 'selected'; ?>>15 mois</option>
                         <option value="16_mois" <?php if($_POST['frequence_revenus'] === '16_mois') echo 'selected'; ?>>16 mois</option>
+                        <option value="0" <?php if($_POST['frequence_revenus'] === '0') echo 'selected'; ?> hidden>none</option>
+
                     </select>
                 </div>
 
