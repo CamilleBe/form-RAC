@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             let allFieldsCompleted = true;
             requiredFields.forEach(field => {
+
                 if (!field.value) {
                     allFieldsCompleted = false;
                 }
@@ -63,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             //Capturer la valeur du bouton radio statut
             let response_step1 = document.querySelector('input[name="statut"]:checked').value;
+
 
             if (currentStep === 1) {
 

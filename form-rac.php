@@ -45,12 +45,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     if (empty($errors)) {
+
         try {
+
+            // Affichez le contenu de $_POST pour le débogage
+            echo "<pre>";
+            print_r($_POST);
+            echo "</pre>";
+
+            // Vérifiez si le statut est "non"
+            if ($_POST['statut'] === 'non') {
+                $_POST['mensualites_credits_immobiliers'] = "0.00";
+                $_POST['total_restant_credits_immobiliers'] = "0.00";
+                $_POST['valeur_patrimoine_immobilier'] = "0.00";
+                // Ajoutez d'autres champs si nécessaire
+            }
+
+            // Code de débogage pour vérifier si la condition est exécutée
+            echo ($_POST['statut'] === 'non') ? "Condition is true" : "Condition is false";
+
 
             $query_params = array(
                 ':statut' => $_POST['statut'],
 
                 ':credit_immobilier' => $_POST['credit_immobilier'],
+                /*':mensualites_credits_immobiliers' => ($_POST['statut'] == 'non') ? "0.00" : $_POST['statut'],*/
                 ':mensualites_credits_immobiliers' => $_POST['mensualites_credits_immobiliers'],
                 ':total_restant_credits_immobiliers' => $_POST['total_restant_credits_immobiliers'],
                 ':valeur_patrimoine_immobilier' => $_POST['valeur_patrimoine_immobilier'],
@@ -499,7 +518,7 @@ $email = $_POST['email'] ?? "";
                     <div class="f2pl">
                         <div>
                             <label for="ville">Ville</label> <br>
-                            <input type="text" id="ville" name="ville" autocomplete="ville" value="<?php echo $_POST['ville'] ?? ''; ?>">
+                            <input type="text" id="ville" name="ville" autocomplete="ville" value="<?php echo $_POST['ville'] ?? ''; ?>" required>
                         </div>
 
                         <div>
