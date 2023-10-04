@@ -199,6 +199,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 }
 
+            } else if (currentStep === "12") {
+                const responseStep12 = document.querySelector('select[name="emprunt"]').value;
+                console.log(responseStep12);
+
+                if (responseStep12 === "seul") {
+
+                    // Masque le bloc de questions actuel en fonction de l'étape actuelle
+
+                    if (currentQuestions) {
+                        currentQuestions.style.display = "none";
+                        console.log("le block " + currentQuestions.getAttribute("data-step") + " disparait");
+
+                        //On enlève l'attribut required
+
+
+                    }
+
+                }
+
+
             } else {
                 if (allFieldsCompleted) {
                     // Masque le bloc de questions actuel en fonction de l'étape actuelle
