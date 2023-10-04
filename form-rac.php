@@ -69,6 +69,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_POST['frequence_revenus'] = "0";
             }
 
+            if ( $_POST['emprunt'] === 'seul') {
+
+                $_POST['genre_co_emprunteur'] = "0.00";
+                $_POST['nom_co_emprunteur'] = "0.00";
+                $_POST['prenom_co_emprunteur'] = "0.00";
+                $_POST['date_naissance_co_emprunteur'] = "0.00";
+                $_POST['ville_naissance_co_emprunteur'] = "0.00";
+                $_POST['pays_naissance_co_emprunteur'] = "0.00";
+                $_POST['nationalite_co_emprunteur'] = "0.00";
+
+                $_POST['contrat_de_travail_co_emprunteur'] = "0";
+                $_POST['anciennete_travail_mois_co_emprunteur'] = "0.00";
+                $_POST['anciennete_travail_annee_co_emprunteur'] = "0.00";
+                $_POST['revenu_net_mensuel_avant_prelevement_co_emprunteur'] = "0.00";
+                $_POST['frequence_revenus_co_emprunteur'] = "0";
+            }
+
+
             // Code de débogage pour vérifier si la condition est exécutée
             echo ($_POST['statut'] === 'non') ? "Condition is true" : "Condition is false";
 
@@ -798,11 +816,6 @@ $email = $_POST['email'] ?? "";
                             <label for="date_naissance_co_emprunteur">Date de naissance</label>
                             <input type="text" id="date_naissance_co_emprunteur" name="date_naissance_co_emprunteur" autocomplete="date_naissance_co_emprunteur" value="<?php echo $_POST['date_naissance_co_emprunteur'] ?? ''; ?>" placeholder="JJ/MM/AAAA" required>
 
-                            <div class="fl-error">
-                                <?php if (isset($errors['wrong_date_co_emprunteur'])) { ?>
-                                    <p id="error1"><?php echo $errors['wrong_date_co_emprunteur']; ?></p>
-                                <?php } ?>
-                            </div>
                         </div>
 
                         <div>
